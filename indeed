@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" id="htmlTag">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>معرض أعمال المهندس | Portfolio</title>
+    <style>
+        /* التنسيقات الأساسية والألوان الدافئة المستوحاة من العمارة */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: #fcfbf9;
+            color: #333;
+            transition: direction 0.3s ease;
+        }
+
+        /* الهيدر والشريط العلوي الثابت */
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background-color: #ffffff;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 5%;
+            z-index: 1000;
+        }
+
+        /* التحكم في اتجاه الهيدر وعناصره عند تغيير اللغة */
+        html[dir="rtl"] header { flex-direction: row; }
+        html[dir="ltr"] header { flex-direction: row-reverse; }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+
+        .header-controls {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        /* لضمان الترتيب الصحيح للأزرار حسب الاتجاه */
+        html[dir="rtl"] .header-controls { flex-direction: row; }
+        html[dir="ltr"] .header-controls { flex-direction: row-reverse; }
+
+        /* زر تبديل اللغة الأنيق */
+        .lang-btn {
+            background-color: #e67e22;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 14px;
+            transition: background 0.3s;
+        }
+
+        .lang-btn:hover {
+            background-color: #d35400;
+        }
+
+        /* تصميم القائمة ذات الثلاثة خطوط */
+        .menu-icon {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            width: 30px;
+            height: 21px;
+            cursor: pointer;
+            z-index: 1001;
+        }
+
+        .menu-icon span {
+            display: block;
+            height: 3px;
+            width: 100%;
+            background-color: #2c3e50;
+            border-radius: 3px;
+        }
+
+        /* القائمة المنسدلة الجانبية التفاعلية */
+        .nav-links {
+            position: fixed;
+            top: 0;
+            width: 250px;
+            height: 100vh;
+            background-color: #ffffff;
+            box-shadow: 0 0 15px rgba(0,0,0,0.05);
+            display: flex;
+            flex-direction: column;
+            padding: 100px 30px;
+            gap: 25px;
+            transition: all 0.4s ease;
+            z-index: 999;
+        }
+
+        /* التحكم بموقع ظهور وانزلاق القائمة حسب اتجاه اللغة الحالي */
+        html[dir="rtl"] .nav-links { right: -100%; left: auto; }
+        html[dir="rtl"] .nav-links.active { right: 0; left: auto; }
+        html[dir="ltr"] .nav-links { left: -100%; right: auto; }
+        html[dir="ltr"] .nav-links.active { left: 0; right: auto; }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #2c3e50;
+            font-size: 18px;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: #e67e22;
+        }
+
+        /* تنسيق أقسام الصفحة */
+        section {
+            padding: 120px 8% 80px 8%;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        h2 {
+            font-size: 32px;
+            color: #2c3e50;
+            margin-bottom: 30px;
+            border-bottom: 3px solid #e67e22;
+            width: fit-content;
+            padding-bottom: 5px;
+        }
+
+        /* الخانة الأولى: تعريف عن المهندس */
+        #about { background-color: #fcfbf9; }
+        .about-text { font-size: 18px; line-height: 1.8; max-width: 800px; color: #555; }
+
+        /* الخانة الثانية: معرض الأعمال */
+        #portfolio { background-color: #f4f1ea; }
+        .project-card {
+            background: #ffffff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.02);
+            margin-bottom: 25px;
+        }
+        
+        html[dir="rtl"] .project-card { border-right: 5px solid #e67e22; border-left: none; }
+        html[dir="ltr"] .project-card { border-left: 5px solid #e67e22; border-right: none; }
+
+        .project-card h3 { color: #2c3e50; margin-bottom: 15px; font-size: 22px; }
+        .project-card p { font-size: 16px; line-height: 1.7; color: #666; }
+
+        /* فئات التحكم بإخفاء وإظهار اللغات تلقائياً */
+        .lang-en { display: none; }
+        html[dir="ltr"] .lang-ar { display: none; }
+        html[dir="ltr"] .lang-en { display: block; }
+    </style>
+</head>
+<body>
+
+    <!-- الشريط العلوي الثابت وعناصر التحكم -->
+    <header>
+        <div class="logo">
+            <span class="lang-ar">المهندس أسامة</span>
+            <span class="lang-en">Eng. Osama</span>
+        </div>
+        <div class="header-controls">
+            <!-- زر تبديل اللغة التفاعلي -->
+            <button class="lang-btn" onclick="switchLanguage()" id="langBtn">English</button>
+            <div class="menu-icon" onclick="toggleMenu()">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+        
+        <!-- القائمة الجانبية المنسدلة -->
+        <nav class="nav-links" id="navLinks">
+            <a href="#about" onclick="toggleMenu()" class="lang-ar">تعريف عن المهندس</a>
+            <a href="#about" onclick="toggleMenu()" class="lang-en">About the Engineer</a>
+            <a href="#portfolio" onclick="toggleMenu()" class="lang-ar">معرض أعمالي</a>
+            <a href="#portfolio" onclick="toggleMenu()" class="lang-en">My Work</a>
+        </nav>
+    </header>
+
+    <!-- الخانة الأولى: تعريف عن المهندس -->
+    <section id="about">
+        <h2>
+            <span class="lang-ar">تعريف عن المهندس</span>
+            <span class="lang-en">About the Engineer</span>
+        </h2>
+        <div class="about-text">
+            <!-- المحتوى العربي -->
+            <div class="lang-ar">
+                <p>أنا مصمم معماري واعد، أجمع في رؤيتي الهندسية بين جماليات الهوية البصرية والكتل الفراغية في <strong>الهندسة المعمارية</strong>، والحلول الإنشائية والتنفيذية الصلبة في <strong>الهندسة المدنية</strong>. تخرجت من الثانوية العامة في المملكة العربية السعودية بمعدل 98.23% (دفعة 2024).</p>
+                <p style="margin-top: 15px;">يسرني أن أقدم من خلال this الموقع نهجاً تكاملياً يربط الأفكار الفنية بالواقع العملي والتنفيذي للمشاريع الكبرى.</p>
+            </div>
+            <!-- المحتوى الإنجليزي -->
+            <div class="lang-en">
+                <p>I am an aspiring architectural designer who bridges the gap between visual aesthetics and spatial composition in <strong>Architectural Engineering</strong>, and robust structural and executive solutions in <strong>Civil Engineering</strong>. I graduated from high school in Saudi Arabia with a cumulative GPA of 98.23% (Class of 2024).</p>
+                <p style="margin-top: 15px;">Through this digital portfolio, I aim to explore innovative cross-cultural engineering paradigms, delivering sustainable designs that translate artistic concepts into solid, real-world structural masterpieces.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- الخانة الثانية: معرض الأعمال -->
+    <section id="portfolio">
+        <h2>
+            <span class="lang-ar">معرض أعمالي</span>
+            <span class="lang-en">My Work</span>
+        </h2>
+        <div class="project-card">
+            <!-- تفاصيل المشروع بالعربية -->
+            <div class="lang-ar">
+                <h3>أطروحة إعادة تصور وتكييف العمارة المساجدية العثمانية في البيئة اليمنية</h3>
+                <p style="margin-bottom: 10px;"><strong>الجانب المعماري:</strong> دراسة دمج فلسفة الفراغات الممتدة والقباب والنوافذ الكبيرة لإدخال الإضاءة النهارية الطبيعية والمستدامة للمساجد التركية العثمانية وتكييفها بصرياً مع واجهات الحجر والقمريات اليمنية التراثية.</p>
+                <p><strong>الجانب المدني الإنشائي:</strong> اقتراح أنظمة إنشائية هجينة لتوزيع أحمال القباب الكبيرة باستخدام مواد بناء محلية، ونقل تقنيات العزل المائي الحديثة لحماية هياكل المباني التاريخية من الأمطار والرطوبة الموسمية.</p>
+            </div>
+            <!-- تفاصيل المشروع بالإنجليزية -->
+            <div class="lang-en">
+                <h3>Adapting Ottoman Mosque Architecture into the Yemeni Built Environment</h3>
+                <p style="margin-bottom: 10px;"><strong>Architectural Domain:</strong> Reimagining the fluid spaces, grand domes, and expansive window concepts of classical Turkish Ottoman mosques to maximize natural daylighting. This conceptual design is contextually adapted to sync with the stone facades, heritage textures, and traditional colored qamariyah windows of Yemeni architecture.</p>
+                <p><strong>Civil & Structural Domain:</strong> Proposing hybrid structural configurations to efficiently distribute heavy dome loads using localized building materials. Additionally, exploring the transfer of modern Turkish waterproofing and thermal insulation techniques to safeguard historic regional structures from seasonal precipitation and humidity issues.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- البرمجة الذكية للتحكم بالقائمة وتبديل اللغات والاتجاهات تلقائياً -->
+    <script>
+        function toggleMenu() {
+            const navLinks = document.getElementById('navLinks');
+            navLinks.classList.toggle('active');
+        }
+
+        function switchLanguage() {
